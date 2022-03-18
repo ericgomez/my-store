@@ -6,7 +6,8 @@ function validatorHandler (schema, property) {
     /*
      Dynamic request req[property] = req.body or req.query or req.params
      */
-    const { error } = schema.validate(req[property])
+    const { error } = schema.validate(req[property], { abortEarly: false })
+    // abortEarly = false -> return all errors
 
     if (error) {
       // send middleware error - Boom error
