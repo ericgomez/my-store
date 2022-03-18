@@ -1,3 +1,4 @@
+/*
 const { Client } = require('pg')
 
 async function getConnection () {
@@ -15,3 +16,4 @@ async function getConnection () {
 }
 
 module.exports = getConnection
+*/
