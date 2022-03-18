@@ -5,18 +5,14 @@ const ProductsService = require('./../services/products')
 const router = express.Router()
 const service = new ProductsService()
 
-router.get('/filter', (req, res) => {
-  res.send('Filter products')
-})
-
 // http://localhost:3000/products?limit=10
-router.get('/', (req, res) => {
-  const products = service.find()
+router.get('/', async (req, res) => {
+  const products = await service.find()
 
   res.json(products)
 })
 
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
   const { id } = req.params
 
   const product = service.findOne(id)
@@ -24,7 +20,7 @@ router.get('/:id', (req, res) => {
   res.json(product)
 })
 
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   const body = req.body
 
   const product = service.create(body)
@@ -32,16 +28,21 @@ router.post('/', (req, res) => {
   res.status(201).json(product)
 })
 
-router.patch('/:id', (req, res) => {
+router.patch('/:id', async (req, res) => {
   const { id } = req.params
   const body = req.body
 
-  const product = service.update(id, body)
-
-  res.json(product)
+  try {
+    const product = service.update(id, body)
+    res.json(product)
+  } catch (error) {
+    res.status(404).json({
+      message: error.message
+    })
+  }
 })
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
   const { id } = req.params
 
   const product = service.delete(id)
