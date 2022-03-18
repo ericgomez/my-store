@@ -2,7 +2,11 @@ const express = require('express')
 
 const routerAPI = require('./routes')
 
-const { logErrors, errorHandler } = require('./middlewares/error.handler')
+const {
+  logErrors,
+  errorHandler,
+  boomErrorHandler
+} = require('./middlewares/error.handler')
 
 const app = express()
 const port = 3000
@@ -16,6 +20,7 @@ routerAPI(app)
 
 // middleware type error
 app.use(logErrors)
+app.use(boomErrorHandler) // Boom error else next error handler
 app.use(errorHandler)
 
 app.listen(port, () => {
