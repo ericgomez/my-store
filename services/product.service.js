@@ -1,12 +1,20 @@
 const faker = require('faker')
 const Boom = require('@hapi/boom')
 
+const pool = require('./../libs/postgres_pool')
+
 class ProductsService {
   constructor () {
     this.products = []
 
     // generate products dummy data
     this.generate()
+
+    // create a connection pool
+    this.pool = pool
+    this.pool.on('error', err =>
+      console.error('Unexpected error on idle client', err)
+    )
   }
 
   generate () {
@@ -34,12 +42,11 @@ class ProductsService {
   }
 
   async find () {
-    // eslint-disable-next-line no-unused-vars
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve(this.products)
-      }, 5000) // simulate a long process
-    })
+    const query = 'SELECT * FROM tasks'
+
+    const { rows } = await this.pool.query(query)
+
+    return rows
   }
 
   async findOne (id) {
