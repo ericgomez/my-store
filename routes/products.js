@@ -1,7 +1,9 @@
 const express = require('express')
-const faker = require('faker')
+
+const ProductsService = require('./../services/products')
 
 const router = express.Router()
+const service = new ProductsService()
 
 router.get('/filter', (req, res) => {
   res.send('Filter products')
@@ -9,19 +11,7 @@ router.get('/filter', (req, res) => {
 
 // http://localhost:3000/products?limit=10
 router.get('/', (req, res) => {
-  const products = []
-  const { limit } = req.query
-
-  const size = limit ? parseInt(limit) : 100
-
-  for (let i = 0; i < size; i++) {
-    products.push({
-      id: faker.random.uuid(),
-      name: faker.commerce.productName(),
-      price: parseInt(faker.commerce.price()),
-      image: faker.image.imageUrl()
-    })
-  }
+  const products = service.find()
 
   res.json(products)
 })
@@ -29,11 +19,9 @@ router.get('/', (req, res) => {
 router.get('/:id', (req, res) => {
   const { id } = req.params
 
-  res.json({
-    id: id,
-    name: 'Product 1',
-    price: 10
-  })
+  const product = service.findOne(id)
+
+  res.json(product)
 })
 
 router.post('/', (req, res) => {
