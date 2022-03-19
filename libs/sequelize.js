@@ -15,6 +15,4 @@ const sequelize = new Sequelize(URI, {
 
 setupModels(sequelize)
 
-sequelize.sync() // create tables
-
 module.exports = sequelize

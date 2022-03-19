@@ -1,3 +1,4 @@
+require('dotenv').config()
 const { config } = require('./../config/config')
 
 const USER = encodeURIComponent(config.dbUser)
