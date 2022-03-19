@@ -6,7 +6,8 @@ const routerAPI = require('./routes')
 const {
   logErrors,
   errorHandler,
-  boomErrorHandler
+  boomErrorHandler,
+  ormErrorHandler
 } = require('./middlewares/error.handler')
 
 const app = express()
@@ -36,6 +37,7 @@ routerAPI(app)
 
 // middleware type error
 app.use(logErrors)
+app.use(ormErrorHandler)
 app.use(boomErrorHandler) // Boom error else next error handler
 app.use(errorHandler)
 
