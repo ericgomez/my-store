@@ -2,6 +2,7 @@ require('dotenv').config()
 const { Sequelize } = require('sequelize')
 
 const { config } = require('./../config/config')
+const setupModels = require('./../db/models')
 
 const USER = encodeURIComponent(config.dbUser)
 const PASSWORD = encodeURIComponent(config.dbPassword)
@@ -11,5 +12,9 @@ const sequelize = new Sequelize(URI, {
   dialect: 'postgres',
   logging: console.log // logging shows the query that is being executed
 })
+
+setupModels(sequelize)
+
+sequelize.sync() // create tables
 
 module.exports = sequelize
